@@ -1,6 +1,9 @@
 const database = require('../models')
+const { TurmasServices } = require('../services')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+
+const turmasService = new TurmasServices()
 
 class TurmaController {
   static async pegaTodasAsTurmas(req, res){
@@ -24,11 +27,7 @@ class TurmaController {
   static async pegaUmaTurma(req, res) {
     const { id } = req.params
     try {
-      const umaTurma = await database.Turmas.findOne( { 
-        where: { 
-          id: Number(id) 
-        }
-      })
+      const umaTurma = await turmasService.pegaUmRegistro({id})
       return res.status(200).json(umaTurma)
     } catch (error) {
       return res.status(500).json(error.message)
